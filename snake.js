@@ -3,9 +3,12 @@ const width = 800;
 const height = 600;
 const initialFr = 8;
 
-let snake, direction, foodX, foodY, directionQueue, directionMap;
+let gameover, snake, direction, foodX, foodY, directionQueue, directionMap;
 
-function restart() {
+function setup() {
+    createCanvas(width, height);
+    textSize(18);
+    gameover = false;
     snake = [];
     directionQueue = [];
     direction = RIGHT_ARROW;
@@ -16,12 +19,6 @@ function restart() {
     directionMap.set(DOWN_ARROW, {move: e => e.y += step, isValid: d => d === RIGHT_ARROW || d === LEFT_ARROW});
     snake.push({x: step * 2, y: 0, d: RIGHT_ARROW}, {x: step, y: 0, d: RIGHT_ARROW}, {x: 0, y: 0, d: RIGHT_ARROW});
     food();
-}
-
-function setup() {
-    createCanvas(width, height);
-    textSize(18);
-    restart();
 }
 
 function keyPressed() {
@@ -51,8 +48,18 @@ function isSnakeBody(x, y, ignoreHead = false) {
         return s.x === x && s.y === y;
     }).length > 0;
 }
+
+function isOut(x, y) {
+    return x < 0 || x > width - step || y < 0 || y > height - step;
+}
   
 function draw() {
+    if (gameover) {
+        text("GAME OVER", width / 2 - 50, height / 2);
+        text("score: " + snake.length, width / 2 - 30, height / 2 + 20);
+        return;
+    }
+
     frameRate(floor(snake.length / 10) + initialFr);
     background(40);
     fill('red');
@@ -79,18 +86,13 @@ function draw() {
 
     let headX = snake[0].x;
     let headY = snake[0].y;
-    
-    if (isSnakeBody(headX, headY, true)) {
-        //TODO show gameover and score
-        restart();
-    }
-    
+    gameover = isSnakeBody(headX, headY, true) || isOut(headX, headY);
     if (int(dist(headX, headY, foodX, foodY)) === 0) {
         let add = {x: headX, y: headY, d: direction};
         nextPosition(add);
         snake.unshift(add);
         food();
-    }   
-    
+    }
+
     text("score: " + snake.length, 725, 20);
 }
