@@ -65,19 +65,16 @@ function draw() {
     fill('red');
     rect(foodX, foodY, step, step);
     fill('white');
-
     for (let index = 0; index < snake.length; index++) {
         const e = snake[index];
-        let posX = constrain(e.x, 0, width - step);
-        let posY = constrain(e.y, 0, height - step);
-        rect(posX, posY, step, step); 
+        rect(e.x, e.y, step, step); 
 
-        for (let di = 0; di < directionQueue.length; di++) {
-            const dItem = directionQueue[di];
+        for (let dIndex = 0; dIndex < directionQueue.length; dIndex++) {
+            const dItem = directionQueue[dIndex];
             if (dItem.x === e.x & dItem.y === e.y) {
                 e.d = dItem.d;
                 if (index === snake.length - 1) {
-                    directionQueue.splice(di, 1);
+                    directionQueue.splice(dIndex, 1);
                 }
             }
         }
