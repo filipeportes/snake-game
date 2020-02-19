@@ -41,12 +41,12 @@ function food() {
 }
 
 function isSnakeBody(x, y, ignoreHead = false) {
-    return snake.filter( (s, index) => {
+    return snake.some( (s, index) => {
         if(ignoreHead && index === 0) {
             return false;
         }
         return s.x === x && s.y === y;
-    }).length > 0;
+    });
 }
 
 function isOut(x, y) {
