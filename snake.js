@@ -65,8 +65,7 @@ function draw() {
     fill('red');
     rect(foodX, foodY, step, step);
     fill('white');
-    for (let index = 0; index < snake.length; index++) {
-        const e = snake[index];
+    snake.forEach((e, index) => {
         rect(e.x, e.y, step, step); 
 
         for (let dIndex = 0; dIndex < directionQueue.length; dIndex++) {
@@ -79,7 +78,7 @@ function draw() {
             }
         }
         nextPosition(e);
-    }
+    });
 
     let headX = snake[0].x;
     let headY = snake[0].y;
