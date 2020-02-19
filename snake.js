@@ -18,7 +18,7 @@ function setup() {
     directionMap.set(UP_ARROW, {move: e => e.y -= step, isValid: d => d === RIGHT_ARROW || d === LEFT_ARROW});
     directionMap.set(DOWN_ARROW, {move: e => e.y += step, isValid: d => d === RIGHT_ARROW || d === LEFT_ARROW});
     snake.push({x: step * 2, y: 0, d: RIGHT_ARROW}, {x: step, y: 0, d: RIGHT_ARROW}, {x: 0, y: 0, d: RIGHT_ARROW});
-    food();
+    newFoodCoordinate();
 }
 
 function keyPressed() {
@@ -32,11 +32,11 @@ function nextPosition(e) {
     directionMap.get(e.d).move(e);
 }
 
-function food() {
+function newFoodCoordinate() {
     foodX = floor(random(0, (width / step))) * step;
     foodY = floor(random(0, (height / step))) * step;
     if (isSnakeBody(foodX, foodY)) {
-        food();
+        newFoodCoordinate();
     }
 }
 
@@ -87,7 +87,7 @@ function draw() {
         let add = {x: headX, y: headY, d: direction};
         nextPosition(add);
         snake.unshift(add);
-        food();
+        newFoodCoordinate();
     }
 
     text("score: " + snake.length, 725, 20);
